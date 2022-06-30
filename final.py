@@ -48,7 +48,9 @@ elif payload == '2':
 output = input('\nPlease Name Your File: ')
 output = f'> {output}'
 
-
-print(f'{platform}{architecture}{payload} {LHOST} {LPORT} {form} {output}')
-
         
+cmd = f'{platform}{architecture}{payload} {LHOST} {LPORT} {form} {output}'
+
+# os.system(cmd)
+
+print(cmd)
