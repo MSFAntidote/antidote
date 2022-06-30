@@ -54,6 +54,12 @@ elif payload == '2':
 ##TEST PRINT##
 print(payload)
 
-print(f'{platform}{architecture}{payload} {LHOST} {LPORT} {form}')
+output = input('\nPlease Name Your File: ')
+output = f'> {output}'
+
+##TEST PRINT##
+print(output)
+
+print(f'{platform}{architecture}{payload} {LHOST} {LPORT} {form} {output}')
 
         
