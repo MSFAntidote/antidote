@@ -19,7 +19,8 @@ if platform == '1':
 elif platform == '2':
   platform = 'msfvenom -p Windows/'
   form = '-f exe'
-
+## TEST PRINT##
+print(platform)
 
 architecture = input('\nSelect Platform architecture #: \n\n1) x86\n2) x64\n\n')
 
@@ -28,14 +29,20 @@ if architecture == '1':
 elif architecture == '2':
   architecture = 'x64/'
 
+## TEST PRINT##
+print(architecture)
 
 ip = input('\nEnter Target IP: \n\n')
 LHOST = f'LHOST={ip}'
 
+##TEST PRINT##
+print(LHOST)
 
 port = input('\nEnter Target Port: \n\n')
 LPORT = f'LPORT={port}'
 
+##TEST PRINT##
+print(LPORT)
 
 payload = input('\nSelect Payload: \n\n1) payload1\n2) payload2\n\n')
 
@@ -44,10 +51,14 @@ if payload == '1':
 elif payload == '2':
   payload = 'payload2'
 
+##TEST PRINT##
+print(payload)
 
 output = input('\nPlease Name Your File: ')
 output = f'> {output}'
 
+##TEST PRINT##
+print(output)
 
 print(f'{platform}{architecture}{payload} {LHOST} {LPORT} {form} {output}')
 
