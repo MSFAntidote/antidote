@@ -1,4 +1,4 @@
-import os
+import os, subprocess
 
 platform = ''
 architecture =''
@@ -10,6 +10,13 @@ LPORT = ''
 form= ''
 payload = ''
 output = ''
+
+
+
+command = ['ls', '-l']
+p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.IGNORE)
+text = p.stdout.read()
+retcode = p.wait()
 
 platform = input('\nSelect Target Platform #: \n\n1) Linux\n2) Windows\n\n')
 
