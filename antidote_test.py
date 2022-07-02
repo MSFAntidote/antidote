@@ -252,6 +252,7 @@ def main():
     # os.system(cmd)
     print(cmd)
 
+    #Repeat or exit
     repeat = input('\n\nWould you like to create another payload?  (y/n): \n\n')
     if repeat.lower() == "y":
         main()
