@@ -66,7 +66,7 @@ def var_name_submenu():
   print("\nvar-name submenu")
 
 def main():
-
+  print("splash page code")
   selection = "0"
   submenus = ("add_code",
               "architecture",
@@ -89,8 +89,6 @@ def main():
               "template",
               "timeout",
               "var_name")
-
-  print("splash page code")
 
   for submenu in submenus:
     globals()[submenu + "_value"] = ""
