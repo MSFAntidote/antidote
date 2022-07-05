@@ -47,7 +47,7 @@ def main():
     pexec_cmd = ''
 
     #OS Detection
-    detect_input = input(f'{black}\nWelcome to MSF Antidote.  Would you like to enable OS detection? {red}[Requires Nmap] {cyan}(y/n){normal}  ')
+    detect_input = input(f'{white}\nWelcome to MSF Antidote.  Would you like to enable OS detection? {red}[Requires Nmap] {cyan}(y/n){normal}  ')
 
     if detect_input.lower() == 'y':
         ip_input = input('\nPlease enter the target IP: ')
@@ -58,7 +58,7 @@ def main():
 
     #Platform Selection
     elif detect_input.lower() == 'n':
-        platform_input = input(f'\n{black}Select your target platform:\n\n{white}1) {cyan}Windows\n\n{white}2) {cyan}Linux\n\n{white}3) {cyan}OSX\n\n{white}4) {cyan}Apple ios\n\n{white}5) {cyan}Android\n\n{normal}')
+        platform_input = input(f'\n{white}Select your target platform:\n\n{white}1) {cyan}Windows\n\n{white}2) {cyan}Linux\n\n{white}3) {cyan}OSX\n\n{white}4) {cyan}Apple ios\n\n{white}5) {cyan}Android\n\n{normal}')
         os.system('clear')
 
 
@@ -70,19 +70,19 @@ def main():
             form = '-f exe'            
             
         #Windows Architecture Input
-            architecture_input = input(f'\n{black}Select Platform Architecture:\n\n{white}1) {cyan}x86\n\n{white}2) {cyan}x64{normal}')
+            architecture_input = input(f'\n{white}Select Platform Architecture:\n\n{white}1) {cyan}x86\n\n{white}2) {cyan}x64{normal}')
             os.system('clear')
             if architecture_input == '1':
                 arch_cmd = '-a x86'
 
         #Windows x86 Payload Input
-                payload_input = input(f'{black}Select from available payloads:\n\n{white}1) {cyan}Spawn a piped command shell\n\n{white}2) {cyan}Upload an executable and run it\n\n{normal}')
+                payload_input = input(f'{white}Select from available payloads:\n\n{white}1) {cyan}Spawn a piped command shell\n\n{white}2) {cyan}Upload an executable and run it\n\n{normal}')
                 os.system('clear')
 
                 if payload_input == '1':
                     payload = 'shell/bind_tcp'
                     
-                    port_input = input(f'\n{black}Enter Listening Port: \n\n{normal}')
+                    port_input = input(f'\n{white}Enter Listening Port: \n\n{normal}')
                     LPORT = f'LPORT={port_input}'   
                     
                     os.system('clear')
@@ -90,11 +90,11 @@ def main():
                 elif payload_input == '2':
                     payload = 'upexec/bind_tcp'
                     
-                    port_input = input(f'\n{black}Enter Listening Port: \n\n{normal}')
+                    port_input = input(f'\n{white}Enter Listening Port: \n\n{normal}')
                     LPORT = f'LPORT={port_input}'
                     os.system('clear') 
                     
-                    pexec_input = input(f'\n{black}Enter the path to the file you wish to upload and execute.\n\n{normal}')
+                    pexec_input = input(f'\n{white}Enter the path to the file you wish to upload and execute.\n\n{normal}')
                     pexec_cmd = f'PEXEC={pexec_input}'
                     os.system('clear')
 
@@ -267,7 +267,7 @@ def main():
 
 
     #File Output
-    output = input(f'\n{black}Please Name Your File: {normal}')
+    output = input(f'\n{white}Please Name Your File: {normal}')
     output = f'> {output}'
     os.system('clear')
 
@@ -278,7 +278,7 @@ def main():
     print(cmd)
 
     #Repeat or exit
-    repeat = input(f'\n\n{black}Would you like to create another payload?  {cyan}(y/n): \n\n{normal}')
+    repeat = input(f'\n\n{white}Would you like to create another payload?  {cyan}(y/n): \n\n{normal}')
     if repeat.lower() == "y":
         main()
     else:
