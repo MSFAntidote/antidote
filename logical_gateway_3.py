@@ -143,15 +143,19 @@ def main():
         eval(submenus[selection] + "_submenu()")
       else:
         print("\ninvalid selection - integer out of range")
-      
+        input("Press any key to continue...\n")
+        
     except ValueError:
 
       if selection == "c":
         print("\nclear selections code")
+        input("Press any key to continue...\n")
       elif selection == "g":
         print("\ngenerate payload code")
+        input("Press any key to continue...\n")
       elif selection != "q":
         print("\ninvalid selection - string")
+        input("Press any key to continue...\n")
 
 if __name__ == "__main__":
   main()
