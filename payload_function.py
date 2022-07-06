@@ -41,7 +41,7 @@ def payload():
             
 
 ##Start of user input##
-    print('\nPlease select from compatible payloads: /n/n')
+    print('\nPlease select from compatible payloads: \n\n')
             
     
 ##Inner function to enumerate compatible options and list them for input##
