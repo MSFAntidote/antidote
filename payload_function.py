@@ -37,11 +37,12 @@ def payload():
 ##retrieve variables from platform and architecture functions##
     plat = platform()
     arch = architecture()
+    no_arch = ['android', 'aix', 'firefox', 'java', 'mainframe', 'multi', 'netware', 'nodejs', 'php', 'python', 'r', 'ruby','unix', 'generic']
 
 ##Check if platform and architecture variables have been set by respective functions##
     if plat is not True:
         platform()
-    elif arch is not True:
+    elif arch is not True and arch not in no_arch:
         architecture()
 
 ##Windows x86 shell selection##
