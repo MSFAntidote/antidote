@@ -12,9 +12,13 @@ def platform():
 def architecture():
     arch = 'x64'
     return arch
+    
 
 ##Get output from msfvenom --list payloads##
 def payload():
+
+    print('\nFetching framework payloads from msfvenom.  Please wait...\n\n')
+
     # platforms_list = [plat.lstrip().split(" ")[0] for plat in subprocess.getoutput('msfvenom --list platforms').split('\n')[6:-1]]
     # archs = [arch.lstrip().split(" ")[0] for arch in subprocess.getoutput('msfvenom --list archs').split('\n')[6:-1]]
     payload_list = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput('msfvenom --list payloads').split('\n')[6:-1]]
@@ -26,7 +30,7 @@ def payload():
         for idx, element in enumerate(options):
             print("{}) {}\n".format(idx + 1, element))
 
-        i = input("Enter number: \n\n")
+        i = input("\nEnter number: ")
         try:
             if 0 < int(i) <= len(options):
                 return int(i) - 1
@@ -710,7 +714,7 @@ def payload():
                     if options not in options_list:
                         options_list.append(options)  
 
-##Ruby selection##
+##Generic selection##
     elif plat == 'generic' and arch == '':
         options_list =[]
         for string in payload_list:

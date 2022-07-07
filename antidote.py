@@ -1,65 +1,34 @@
-import os, subprocess
+#!/usr/bin/env python3
 
-platform = ''
-architecture =''
-ip = ''
-port = ''
-stage = ''
-LHOST = ''
-LPORT = ''
-form= ''
-payload = ''
-output = ''
+import os, subprocess, re
 
+#Color Variables
 
+black = '\u001b[30m'
+red = '\u001b[31m'
+green = '\u001b[32m'
+yellow = '\u001b[33m'
+blue = '\u001b[34m'
+magenta = '\u001b[35m'
+cyan = '\u001b[36m'
+normal = '\u001b[37m'
+normal = '\u001b[00m'
 
-
-command = ['msfvenom', '--list', 'platforms']
-p = subprocess.Popen(command, stdout=subprocess.PIPE)
-text = p.stdout.read()
-retcode = p.wait()
-print(text)
-
-platform = input('\nSelect Target Platform #: \n\n1) Linux\n2) Windows\n\n')
-
-if platform == '1':
-  platform = 'msfvenom -p Linux/'
-  form = '-f elf'
-elif platform == '2':
-  platform = 'msfvenom -p Windows/'
-  form = '-f exe'
+black_b = '\u001b[40m'
+red_b = '\u001b[41m'
+green_b = '\u001b[42m'
+yellow_b = '\u001b[43m'
+blue_b = '\u001b[44m'
+magenta_b = '\u001b[45m'
+cyan_b = '\u001b[46m'
+white_b = '\u001b[47m'
 
 
-architecture = input('\nSelect Platform architecture #: \n\n1) x86\n2) x64\n\n')
-
-if architecture == '1':
-  architecture = 'x86/'
-elif architecture == '2':
-  architecture = 'x64/'
 
 
-ip = input('\nEnter Target IP: \n\n')
-LHOST = f'LHOST={ip}'
 
 
-port = input('\nEnter Target Port: \n\n')
-LPORT = f'LPORT={port}'
 
-
-payload = input('\nSelect Payload: \n\n1) payload1\n2) payload2\n\n')
-
-if payload == '1':
-  payload = 'payload1'
-elif payload == '2':
-  payload = 'payload2'
-
-
-output = input('\nPlease Name Your File: ')
-output = f'> {output}'
-
-        
-cmd = f'{platform}{architecture}{payload} {LHOST} {LPORT} {form} {output}'
-
-os.system(cmd)
-
-# print(cmd)
+  ### DUNDER CHECK ###
+if __name__ == "__main__":
+  main()
