@@ -44,10 +44,6 @@ def payload():
     elif arch is not True:
         architecture()
 
-##Split payload strings by '/' into lists##
-    # for string in payload_list:
-    #     selection = string.split('/')
-
 ##Windows x86 shell selection##
     if plat == 'windows' and arch == 'x86':
         options_list =[]
@@ -731,8 +727,15 @@ def payload():
 ##Take selected input and set as a msfvenom command and return##    
     payload_cmd = f'-p {options[res]}'
     payload_str = f'{options[res]}'
-    print(payload_cmd)
-    return payload_cmd, payload_str
+    
+
+##Choose another payload or return to main##
+    return_input = input(f'\nKeep current payload?:  {payload_str}  (y/n)\n\n')
+    if return_input.lower == 'y':
+        return payload_cmd, payload_str
+        main()
+    else:
+        payload()
 
 
 
