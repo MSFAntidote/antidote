@@ -31,7 +31,8 @@ def payload():
             if 0 < int(i) <= len(options):
                 return int(i) - 1
         except:
-            pass
+            print('\nInvalid option.  Please try again.\n\n')
+            payload()
         return None
         
 ##retrieve variables from platform and architecture functions##
