@@ -77,7 +77,7 @@ def generate_payload():
 def main():
   globals()["border"] = "-" * 170
   globals()["header"] = "\n" + border + "\nmsfAntidote v1.0 2022 Aaron Picard and Devon Meier\n" + border
-  globals()["footer"] = border + "\n[R]eturn the main menu.]\n" + border
+  globals()["footer"] = border + "\n[R]eturn the main menu.\n" + border
   globals()["invalid"] = "\nInvalid selection. Please try again."
   globals()["submenus"] = {"1": "architectures",
                            "2": "payloads",
