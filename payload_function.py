@@ -48,7 +48,7 @@ def payload():
     if plat is not True:
         print('\nPlease set platform option.\n\n')
         platform()
-    elif arch is not True and arch not in no_arch:
+    elif arch is not True and plat not in no_arch:
         print('\nPlease set architecture option.\n\n')
         architecture()
 
