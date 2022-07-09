@@ -17,9 +17,15 @@ def payloads_submenu():
   for string in payload_list:
     selection = re.split(r'[/_]', string)
 
-    if not platforms_value:      
+    if not platforms_value and not architectures_value:      
       payl = '/'.join(selection)
       if payl not in payl_list:
+        payl_list.append(payl)
+      payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
+
+    elif not platforms_value and architectures_value:
+      if architectures_value in selection:
+        payl = '/'.join(selection)
         payl_list.append(payl)
       payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
 
