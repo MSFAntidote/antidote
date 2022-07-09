@@ -26,87 +26,107 @@ white_b = '\u001b[47m'
 
 ##temporary platform function for testing##
 def platforms_submenu():
-    platforms_value = 'linux'
-    return platforms_value
+  # plat_input = input("\nenter platform:  \n\n")
+  # platforms_value = plat_input
+  platforms_value = 'windows'
+  return platforms_value
 
 
 def payloads_submenu():
 
-    print('\nFetching framework payloads from msfvenom.  Please wait...\n\n')
+  print('\nFetching framework payloads from msfvenom.  Please wait...\n\n')
 
-    payload_list = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput('msfvenom --list payloads').split('\n')[6:-1]]
-        
-##retrieve variables from platform and architecture functions##
-    platforms_value = platforms_submenu()
-    payl_list = []
-    three_sh = ['windows']
-    two_sh = ['android', 'apple_ios', 'java', 'linux', 'osx', 'php', 'python', 'unix']
-    # one_sh = ['aix', 'bsd', 'bsdi', 'firefox', 'mainframe', 'multi', 'netware', 'nodejs', 'r', 'ruby', 'solaris', 'generic']
-##Windows x86 shell selection##
-    for string in payload_list:
-      selection = re.split(r'[/_]', string)
-      if platforms_value in three_sh:
-        payloads_options = {"1": "Default",
-                            "2": "Meterpreter", 
-                            "3": "Powershell"}
-      elif platforms_value in two_sh:
-        payloads_options = {"1": "Default",
-                            "2": "Meterpreter"}
-      else: 
-        for string in payload_list:
-          selection = re.split(r'[/_]', string)
-        
-          if platforms_value in selection and 'cmd' not in selection:
-              payl = '/'.join(selection)
-              payl_list.append(payl)
-          payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
-        try:
-          globals()["payloads_value"] = payloads_options[submenu_input(payloads_options)]
-        except KeyError:
-          pass
-        finally:
-          main()
-    
-    try:
-      globals()["payloads_value_shell"] = payloads_options[submenu_input(payloads_options)]
-    except KeyError:
-      pass
-    finally:
-      payloads_submenu_2()                
+  payload_list = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput('msfvenom --list payloads').split('\n')[6:-1]]
+      
+##retrieve variables from platform functions##
+  platforms_value = platforms_submenu()
+  payl_list = []
+  three_sh = ['windows']
+  two_sh = ['android', 'apple_ios', 'java', 'linux', 'osx', 'php', 'python', 'unix']
+  # one_sh = ['aix', 'bsd', 'bsdi', 'firefox', 'mainframe', 'multi', 'netware', 'nodejs', 'r', 'ruby', 'solaris', 'generic']
+
+  # if platforms_value is False:
+  #   try:
+  #     platforms_submenu()
+  #   except KeyError:
+  #     pass
+      
+##Shell Selection##
+
+  for string in payload_list:
+    selection = re.split(r'[/_]', string)
+    if platforms_value in three_sh:
+      payloads_options = {"1": "Default",
+                          "2": "Meterpreter", 
+                          "3": "Powershell"}
+
+    elif platforms_value in two_sh:
+      payloads_options = {"1": "Default",
+                          "2": "Meterpreter"}
+
+    else: 
+      for string in payload_list:
+        selection = re.split(r'[/_]', string)      
+        if platforms_value in selection and 'cmd' not in selection:
+            payl = '/'.join(selection)
+            payl_list.append(payl)
+        payloads_options = {str(index+1):value for index, value in enumerate(payl_list)} 
+
+      try:
+        globals()["payloads_value"] = payloads_options[submenu_input(payloads_options)]
+        return
+      except KeyError:
+        pass
+
+  try:
+    globals()["payloads_value_shell"] = payloads_options[submenu_input(payloads_options)]
+  except KeyError:
+    pass
+  finally:
+    payloads_submenu_2()                
 
 #--------------------------------------------------
 
+##Payload Selection##
 def payloads_submenu_2():
+
   payload_list = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput('msfvenom --list payloads').split('\n')[6:-1]]
   platforms_value = platforms_submenu()
   payl_list = []
+
   if payloads_value_shell == 'Default':
     for string in payload_list:
-        selection = re.split(r'[/_]', string)
-        
+        selection = re.split(r'[/_]', string)        
         if platforms_value in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' not in selection:
-            payl = '/'.join(selection)
-            payl_list.append(payl)
+          payl = '/'.join(selection)
+          payl_list.append(payl)
         payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
 
   elif payloads_value_shell == 'Meterpreter':
-    for string in payload_list:
-        selection = re.split(r'[/_]', string)
-        
+    if platforms_value == 'python':
+      for string in payload_list:
+        selection = re.split(r'[/_]', string)        
+        if (platforms_value in selection and 'meterpreter' in selection) and 'powershell' not in selection and 'cmd' not in selection:
+          payl = '/'.join(selection)
+          payl_list.append(payl)
+        payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
+
+    else:
+      for string in payload_list:
+        selection = re.split(r'[/_]', string)        
         if (platforms_value in selection and 'meterpreter' in selection) and 'powershell' not in selection:
-            payl = '/'.join(selection)
-            payl_list.append(payl)
+          payl = '/'.join(selection)
+          payl_list.append(payl)
         payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
 
   elif payloads_value_shell == 'Powershell':
     for string in payload_list:
-        selection = re.split(r'[/_]', string)
-        
-        if platforms_value in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' in selection:
-            payl = '/'.join(selection)
-            payl_list.append(payl)
-        payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}       
-  
+      selection = re.split(r'[/_]', string)      
+      if platforms_value in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' in selection:
+          payl = '/'.join(selection)
+          payl_list.append(payl)
+      payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)} 
+      
   try:
     globals()["payloads_value"] = payloads_options_2[submenu_input(payloads_options_2)]
   except KeyError:
