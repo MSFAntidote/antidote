@@ -32,7 +32,7 @@ def platforms_submenu():
   return platforms_value
 
 def architectures_submenu():
-  architectures_value = 'x64'
+  architectures_value = 'x86'
   return architectures_value
 
 ## start of payloads selection##
@@ -53,7 +53,7 @@ def payloads_submenu():
       
 ##Shell Selection##
   for string in payload_list:
-    selection = re.split(r'[/_]', string)
+    selection = string.split('/')
 
     if not platforms_value and not architectures_value:      
       payl = '/'.join(selection)
@@ -78,7 +78,7 @@ def payloads_submenu():
 
     else: 
       for string in payload_list:
-        selection = re.split(r'[/_]', string)      
+        selection = string.split('/')      
         
         if architectures_value:
           if platforms_value in selection and architectures_value in selection and 'cmd' not in selection:
@@ -124,7 +124,7 @@ def payloads_submenu_2():
 
   if payloads_value_shell == 'Default':
     for string in payload_list:
-        selection = re.split(r'[/_]', string)  
+        selection = string.split('/')  
         
         if architectures_value:
           if platforms_value == 'windows' and architectures_value == 'x86':     
@@ -161,7 +161,7 @@ def payloads_submenu_2():
   elif payloads_value_shell == 'Meterpreter':
     
     for string in payload_list:
-      selection = re.split(r'[/_]', string)
+      selection = string.split('/')
 
       if architectures_value:
         if platforms_value == 'windows' and architectures_value == 'x86':
@@ -196,7 +196,7 @@ def payloads_submenu_2():
 
   elif payloads_value_shell == 'Powershell':
     for string in payload_list:
-      selection = re.split(r'[/_]', string)
+      selection = string.split('/')
 
       if architectures_value:        
         if architectures_value == 'x86':
