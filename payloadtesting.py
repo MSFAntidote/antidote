@@ -28,7 +28,7 @@ white_b = '\u001b[47m'
 def platforms_submenu():
   # plat_input = input("\nenter platform:  \n\n")
   # platforms_value = plat_input
-  platforms_value = ''
+  platforms_value = 'windows'
   return platforms_value
 
 def architectures_submenu():
@@ -55,9 +55,15 @@ def payloads_submenu():
   for string in payload_list:
     selection = re.split(r'[/_]', string)
 
-    if not platforms_value:      
+    if not platforms_value and not architectures_value:      
       payl = '/'.join(selection)
       if payl not in payl_list:
+        payl_list.append(payl)
+      payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
+
+    elif not platforms_value and architectures_value:
+      if architectures_value in selection:
+        payl = '/'.join(selection)
         payl_list.append(payl)
       payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
 
