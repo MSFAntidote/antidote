@@ -64,7 +64,7 @@ def payloads_submenu():
     globals()["payloadsshell_value"] = payloads_options[submenu_input(payloads_options)]
   except KeyError:
     pass
-  finally:
+  else:
     payloads2_submenu()                
 
 #--------------------------------------------------
