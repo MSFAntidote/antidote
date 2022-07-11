@@ -3,13 +3,27 @@
 
 import inspect, math, subprocess
 
+def encryptions_submenu():
+
+    print('\nFetching encryptions from msfvenom framework.  Please wait...\n\n')
+
+    probe = [encr.lstrip().split(" ")[0] for encr in subprocess.getoutput("msfvenom --list encrypt").split("\n")[6:-1]]
+    encryptions_options = {str(item + 1): probe[item] for item in range(0, len(probe))}
+
+    try:
+        globals()["encryptions_value"] = encryptions_options[submenu_input(encryptions_options)]
+    except KeyError:
+        pass
+
 def encodings_submenu():
+
+    print('\nFetching encoders from msfvenom framework.  Please wait...\n\n')
 
     probe = [enco.lstrip().split(" ")[0] for enco in subprocess.getoutput("msfvenom --list encoders").split("\n")[6:-1]]
     encodings_options = {str(item + 1): probe[item] for item in range(0, len(probe))}
 
     try:
-        globals()["encodings_values"] = encodings_options[submenu_input(encodings_options)]
+        globals()["encodings_value"] = encodings_options[submenu_input(encodings_options)]
     except KeyError:
         pass
 
@@ -88,7 +102,7 @@ def payloads_submenu():
     globals()["payloadsshell_value"] = payloads_options[submenu_input(payloads_options)]
   except KeyError:
     pass
-  finally:
+  else:
     payloads2_submenu()                
 
 #--------------------------------------------------
@@ -282,7 +296,8 @@ def main():
   globals()["submenus"] = {"1": "architectures",
                            "2": "payloads",
                            "3": "platforms",
-                           "4": "encodings"}
+                           "4": "encodings",
+                           "5": "encryptions"}
   print("Importing architectures from msfvenom. Please wait...")
   probe = [arch.lstrip() for arch in subprocess.getoutput('msfvenom --list archs').split('\n')[6:-1]]
   globals()["architectures_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
@@ -290,6 +305,7 @@ def main():
   probe = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput("msfvenom --list payloads").split("\n")[6:-1]]
   globals()["payloads_list"] = probe
   globals()["payloadsshell_value"] = ""
+  globals()["encodings_value"] = ""
   globals()["payloads_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
   print("Complete.\nImporting platforms from msfvenom. Please wait...")  
   probe = [plat.lstrip() for plat in subprocess.getoutput("msfvenom --list platforms").split("\n")[6:-1]]
