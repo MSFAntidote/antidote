@@ -50,10 +50,14 @@ def payloads_submenu():
     selection = string.split('/')
 
     if not platforms_value and not architectures_value:      
-      payl = '/'.join(selection)
-      if payl not in payl_list:
-        payl_list.append(payl)
-      payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
+
+      payloads_options = {str(index+1):value for index, value in enumerate(payloads_list)}
+
+      try:
+        globals()["payloads_value"] = payloads_options[submenu_input(payloads_options)]
+        return
+      except KeyError:
+        pass
 
     elif not platforms_value and architectures_value :
       if architectures_value in selection or ('generic' in selection and 'cmd' not in selection):
