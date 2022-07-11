@@ -6,6 +6,6 @@ def encoding_submenu():
     encoding_options = {str(item + 1): probe[item] for item in range(0, len(probe))}
 
     try:
-        globals()["encoding_values"] = encoding_options[submenu_input(encoding_options)]
+        globals()["encoding_value"] = encoding_options[submenu_input(encoding_options)]
     except KeyError:
         pass
