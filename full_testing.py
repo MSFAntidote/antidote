@@ -202,37 +202,37 @@ def platforms_submenu():
 
 #--------------------------------------------------
 
-def submenu_input(options):
-  selection = ""
-  number_of_options = len(options)
-  options_per_page = 36
-  number_of_pages = math.ceil(number_of_options / options_per_page)
-  current_page = 1
+# def submenu_input(options):
+#   selection = ""
+#   number_of_options = len(options)
+#   options_per_page = 36
+#   number_of_pages = math.ceil(number_of_options / options_per_page)
+#   current_page = 1
   
-  while selection != "r":
-    start = (current_page - 1) * options_per_page + 1
-    end = min(current_page * options_per_page, number_of_options)
-    submenu_display(options, start, end)
-    selection = input("\nmsfAntidote: " + inspect.stack()[1][3].split("_")[0].capitalize() + " menu (page " + str(current_page) + " of " + str(number_of_pages) + ")> ").lower()
+#   while selection != "r":
+#     start = (current_page - 1) * options_per_page + 1
+#     end = min(current_page * options_per_page, number_of_options)
+#     submenu_display(options, start, end)
+#     selection = input("\nmsfAntidote: " + inspect.stack()[1][3].split("_")[0].capitalize() + " menu (page " + str(current_page) + " of " + str(number_of_pages) + ")> ").lower()
     
-    if selection in options.keys():
-      return(selection)
-    elif selection == "p":
+#     if selection in options.keys():
+#       return(selection)
+#     elif selection == "p":
       
-      if current_page > 1:
-        current_page -= 1
-      else:
-        print("\nYou have reached the first page.")
+#       if current_page > 1:
+#         current_page -= 1
+#       else:
+#         print("\nYou have reached the first page.")
     
-    elif selection == "n":
+#     elif selection == "n":
       
-      if current_page < number_of_pages:
-        current_page += 1
-      else:
-        print("\nYou have reached the last page.")
+#       if current_page < number_of_pages:
+#         current_page += 1
+#       else:
+#         print("\nYou have reached the last page.")
     
-    elif selection != "r":
-      print(invalid)
+#     elif selection != "r":
+#       print(invalid)
 
 #--------------------------------------------------
 
@@ -282,7 +282,7 @@ def main():
   print("Complete.\nImporting payloads from msfvenom. Please wait...")  
   probe = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput("msfvenom --list payloads").split("\n")[6:-1]]
   globals()["payloads_list"] = probe
-  globals()["payloads_options"] = ''
+  globals()["payloads_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
   print("Complete.\nImporting platforms from msfvenom. Please wait...")  
   probe = [plat.lstrip() for plat in subprocess.getoutput("msfvenom --list platforms").split("\n")[6:-1]]
   globals()["platforms_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
