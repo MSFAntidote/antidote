@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #Integrate this with Aaron's code - Devon 7/9/22
 
-import inspect, math, re, subprocess
+import inspect, math, subprocess
 
 #--------------------------------------------------
 
@@ -15,7 +15,6 @@ def architectures_submenu():
 
 def payloads_submenu():
       
-##retrieve variables from platform functions##
   payl_list = []
   three_sh = ['windows']
   two_sh = ['android', 'apple_ios', 'java', 'linux', 'osx', 'php', 'python', 'unix']
@@ -32,8 +31,8 @@ def payloads_submenu():
         payl_list.append(payl)
       payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
 
-    elif not platforms_value and architectures_value:
-      if architectures_value in selection:
+    elif not platforms_value and architectures_value :
+      if architectures_value in selection or ('generic' in selection and 'cmd' not in selection):
         payl = '/'.join(selection)
         payl_list.append(payl)
       payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
@@ -52,13 +51,13 @@ def payloads_submenu():
         selection = string.split('/')      
         
         if architectures_value:
-          if platforms_value in selection and architectures_value in selection and 'cmd' not in selection:
+          if platforms_value in selection and architectures_value in selection and 'cmd' not in selection or ('generic' in selection and 'cmd' not in selection):
               payl = '/'.join(selection)
               payl_list.append(payl)
           payloads_options = {str(index+1):value for index, value in enumerate(payl_list)} 
 
         else:
-          if platforms_value in selection and 'cmd' not in selection:
+          if platforms_value in selection and 'cmd' not in selection or ('generic' in selection and 'cmd' not in selection):
               payl = '/'.join(selection)
               payl_list.append(payl)
           payloads_options = {str(index+1):value for index, value in enumerate(payl_list)} 
@@ -76,7 +75,7 @@ def payloads_submenu():
         pass
 
   try:
-    globals()["payloads_value_shell"] = payloads_options[submenu_input(payloads_options)]
+    globals()["payloadsshell_value"] = payloads_options[submenu_input(payloads_options)]
   except KeyError:
     pass
   finally:
@@ -87,30 +86,27 @@ def payloads_submenu():
 ##Payload Selection##
 def payloads2_submenu():
 
-  # payloads_list = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput('msfvenom --list payloads').split('\n')[6:-1]]
-  platforms_value = platforms_submenu()
-  architectures_value = architectures_submenu()
   payl_list = []
 
-  if payloads_value_shell == 'Default':
+  if payloadsshell_value == 'Default':
     for string in payloads_list:
         selection = string.split('/')  
         
         if architectures_value:
           if platforms_value == 'windows' and architectures_value == 'x86':     
-            if platforms_value in selection and 'x64' not in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' not in selection:
+            if platforms_value in selection and 'x64' not in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' not in selection or ('generic' in selection and 'cmd' not in selection):
               payl = '/'.join(selection)
               payl_list.append(payl)
             payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
           
           elif platforms_value == 'windows' and architectures_value != 'x86': 
-            if platforms_value in selection and architectures_value in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' not in selection:
+            if platforms_value in selection and architectures_value in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' not in selection or ('generic' in selection and 'cmd' not in selection):
               payl = '/'.join(selection)
               payl_list.append(payl)
             payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
           
           else:
-            if platforms_value in selection and architectures_value in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' not in selection:
+            if platforms_value in selection and architectures_value in selection and 'meterpreter' not in selection and 'patchupmeterpreter' not in selection and 'powershell' not in selection or ('generic' in selection and 'cmd' not in selection):
               payl = '/'.join(selection)
               payl_list.append(payl)
             payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
@@ -128,7 +124,7 @@ def payloads2_submenu():
               payl_list.append(payl)
             payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
 
-  elif payloads_value_shell == 'Meterpreter':
+  elif payloadsshell_value == 'Meterpreter':
     
     for string in payloads_list:
       selection = string.split('/')
@@ -164,7 +160,7 @@ def payloads2_submenu():
           payl_list.append(payl)
         payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
 
-  elif payloads_value_shell == 'Powershell':
+  elif payloadsshell_value == 'Powershell':
     for string in payloads_list:
       selection = string.split('/')
 
@@ -202,37 +198,37 @@ def platforms_submenu():
 
 #--------------------------------------------------
 
-# def submenu_input(options):
-#   selection = ""
-#   number_of_options = len(options)
-#   options_per_page = 36
-#   number_of_pages = math.ceil(number_of_options / options_per_page)
-#   current_page = 1
+def submenu_input(options):
+  selection = ""
+  number_of_options = len(options)
+  options_per_page = 36
+  number_of_pages = math.ceil(number_of_options / options_per_page)
+  current_page = 1
   
-#   while selection != "r":
-#     start = (current_page - 1) * options_per_page + 1
-#     end = min(current_page * options_per_page, number_of_options)
-#     submenu_display(options, start, end)
-#     selection = input("\nmsfAntidote: " + inspect.stack()[1][3].split("_")[0].capitalize() + " menu (page " + str(current_page) + " of " + str(number_of_pages) + ")> ").lower()
+  while selection != "r":
+    start = (current_page - 1) * options_per_page + 1
+    end = min(current_page * options_per_page, number_of_options)
+    submenu_display(options, start, end)
+    selection = input("\nmsfAntidote: " + inspect.stack()[1][3].split("_")[0].capitalize() + " menu (page " + str(current_page) + " of " + str(number_of_pages) + ")> ").lower()
     
-#     if selection in options.keys():
-#       return(selection)
-#     elif selection == "p":
+    if selection in options.keys():
+      return(selection)
+    elif selection == "p":
       
-#       if current_page > 1:
-#         current_page -= 1
-#       else:
-#         print("\nYou have reached the first page.")
+      if current_page > 1:
+        current_page -= 1
+      else:
+        print("\nYou have reached the first page.")
     
-#     elif selection == "n":
+    elif selection == "n":
       
-#       if current_page < number_of_pages:
-#         current_page += 1
-#       else:
-#         print("\nYou have reached the last page.")
+      if current_page < number_of_pages:
+        current_page += 1
+      else:
+        print("\nYou have reached the last page.")
     
-#     elif selection != "r":
-#       print(invalid)
+    elif selection != "r":
+      print(invalid)
 
 #--------------------------------------------------
 
@@ -282,6 +278,7 @@ def main():
   print("Complete.\nImporting payloads from msfvenom. Please wait...")  
   probe = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput("msfvenom --list payloads").split("\n")[6:-1]]
   globals()["payloads_list"] = probe
+  globals()["payloadsshell_value"] = ""
   globals()["payloads_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
   print("Complete.\nImporting platforms from msfvenom. Please wait...")  
   probe = [plat.lstrip() for plat in subprocess.getoutput("msfvenom --list platforms").split("\n")[6:-1]]
