@@ -3,6 +3,16 @@
 
 import inspect, math, subprocess
 
+def encodings_submenu():
+
+    probe = [enco.lstrip().split(" ")[0] for enco in subprocess.getoutput("msfvenom --list encoders").split("\n")[6:-1]]
+    encodings_options = {str(item + 1): probe[item] for item in range(0, len(probe))}
+
+    try:
+        globals()["encodings_values"] = encodings_options[submenu_input(encodings_options)]
+    except KeyError:
+        pass
+
 #--------------------------------------------------
 
 def architectures_submenu():
@@ -271,7 +281,8 @@ def main():
   globals()["invalid"] = "\nInvalid selection. Please try again."
   globals()["submenus"] = {"1": "architectures",
                            "2": "payloads",
-                           "3": "platforms"}
+                           "3": "platforms",
+                           "4": "encodings"}
   print("Importing architectures from msfvenom. Please wait...")
   probe = [arch.lstrip() for arch in subprocess.getoutput('msfvenom --list archs').split('\n')[6:-1]]
   globals()["architectures_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
