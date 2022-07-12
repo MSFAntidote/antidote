@@ -1,21 +1,29 @@
 def payloads_submenu():
+  
+  print('\nFetching framework payloads from msfvenom.  Please wait...\n\n')
+
+  payloads_list = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput('msfvenom --list payloads').split('\n')[6:-1]]
       
-##Lists containing platforms by amount of shells available - empty list for appending payloads##
   payl_list = []
   three_sh = ['windows']
   two_sh = ['android', 'apple_ios', 'java', 'linux', 'osx', 'php', 'python', 'unix']
   generics = ['arista', 'brocade', 'cisco', 'freebsd', 'hardware', 'hpux', 'irix', 'javascript', 'juniper', 'mikrotik', 'netbsd', 'netware', 'openbsd', 'unify', 'unknown']
   # one_sh = ['aix', 'bsd', 'bsdi', 'firefox', 'mainframe', 'multi', 'netware', 'nodejs', 'r', 'ruby', 'solaris', 'generic']
       
-##Shell Selection and filtration##
-  for string in payload_list:
+##Shell Selection##
+  for string in payloads_list:
     selection = string.split('/')
 
     if not platforms_value and not architectures_value:      
-      payl = '/'.join(selection)
-      if payl not in payl_list:
-        payl_list.append(payl)
-      payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
+
+      payloads_options = {str(index+1):value for index, value in enumerate(payloads_list)}
+
+      try:
+        globals()["payloads_value"] = payloads_options[submenu_input(payloads_options)]
+      except KeyError:
+        pass
+      finally:
+        return
 
     elif not platforms_value and architectures_value :
       if architectures_value in selection or ('generic' in selection and 'cmd' not in selection):
@@ -33,7 +41,7 @@ def payloads_submenu():
                           "2": "Meterpreter"}
 
     else: 
-      for string in payload_list:
+      for string in payloads_list:
         selection = string.split('/')      
         
         if architectures_value:
@@ -46,7 +54,7 @@ def payloads_submenu():
           if platforms_value in selection and 'cmd' not in selection or ('generic' in selection and 'cmd' not in selection):
               payl = '/'.join(selection)
               payl_list.append(payl)
-          payloads_options = {str(index+1):value for index, value in enumerate(payl_list)}
+          payloads_options = {str(index+1):value for index, value in enumerate(payl_list)} 
 
           if platforms_value in generics:
               if 'generic' in selection and 'cmd' not in selection:
@@ -56,9 +64,10 @@ def payloads_submenu():
 
       try:
         globals()["payloads_value"] = payloads_options[submenu_input(payloads_options)]
-        return
       except KeyError:
         pass
+      finally:
+        return
 
   try:
     globals()["payloadsshell_value"] = payloads_options[submenu_input(payloads_options)]
@@ -69,14 +78,13 @@ def payloads_submenu():
 
 #--------------------------------------------------
 
-##Filtration after shell selection##
+##Payload Selection##
 def payloads2_submenu():
 
   payl_list = []
 
-##Default payload filtration##
   if payloadsshell_value == 'Default':
-    for string in payload_list:
+    for string in payloads_list:
         selection = string.split('/')  
         
         if architectures_value:
@@ -111,10 +119,9 @@ def payloads2_submenu():
               payl_list.append(payl)
             payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
 
-##Meterpreter payload filtration##
   elif payloadsshell_value == 'Meterpreter':
     
-    for string in payload_list:
+    for string in payloads_list:
       selection = string.split('/')
 
       if architectures_value:
@@ -148,9 +155,8 @@ def payloads2_submenu():
           payl_list.append(payl)
         payloads_options_2 = {str(index+1):value for index, value in enumerate(payl_list)}
 
-##Powershell payload filtration##
   elif payloadsshell_value == 'Powershell':
-    for string in payload_list:
+    for string in payloads_list:
       selection = string.split('/')
 
       if architectures_value:        

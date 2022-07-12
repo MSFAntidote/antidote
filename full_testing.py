@@ -310,8 +310,8 @@ def main():
   print("Complete.\nImporting payloads from msfvenom. Please wait...")  
   probe = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput("msfvenom --list payloads").split("\n")[6:-1]]
   globals()["payloads_list"] = probe
-  globals()["payloadsshell_value"] = ""
-  globals()["encodings_value"] = ""
+  # globals()["payloadsshell_value"] = ""
+  # globals()["encodings_value"] = ""
   globals()["payloads_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
   print("Complete.\nImporting platforms from msfvenom. Please wait...")  
   probe = [plat.lstrip() for plat in subprocess.getoutput("msfvenom --list platforms").split("\n")[6:-1]]
