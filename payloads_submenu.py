@@ -1,6 +1,6 @@
 def payloads_submenu():
-  
-  print('\nFetching framework payloads from msfvenom.  Please wait...\n\n')
+
+  print('\nImporting payloads from msfvenom.  Please wait...\n\n')
 
   payloads_list = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput('msfvenom --list payloads').split('\n')[6:-1]]
       
