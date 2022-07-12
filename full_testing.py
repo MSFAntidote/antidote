@@ -55,9 +55,10 @@ def payloads_submenu():
 
       try:
         globals()["payloads_value"] = payloads_options[submenu_input(payloads_options)]
-        return
       except KeyError:
         pass
+      finally:
+        return
 
     elif not platforms_value and architectures_value :
       if architectures_value in selection or ('generic' in selection and 'cmd' not in selection):
