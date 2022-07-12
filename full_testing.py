@@ -98,9 +98,10 @@ def payloads_submenu():
 
       try:
         globals()["payloads_value"] = payloads_options[submenu_input(payloads_options)]
-        return
       except KeyError:
         pass
+      finally:
+        return
 
   try:
     globals()["payloadsshell_value"] = payloads_options[submenu_input(payloads_options)]
