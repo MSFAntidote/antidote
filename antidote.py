@@ -5,12 +5,86 @@ import inspect, math, re, subprocess, ipaddress, os
 #--------------------------------------------------
 #--------------------------------------------------
 #--------------------------------------------------
+#--------------------------------------------------
+#--------------------------------------------------
+
+
+
+#--------------------------------------------------
+
+def var_name_submenu():
+  globals()["var_name_value"] = input("\nEnter a custom variable name: ")
+  print("Custom variable name set.")
+
+
+#--------------------------------------------------
+
+def iterations_submenu():
+  globals()["iterations_value"] = ""  
+
+  while iterations_value == "":
+
+    try:
+      globals()["iterations_value"] = int(input("\nPlease enter a number of times to encode the payload: "))
+    except ValueError:
+      print("\nInvalid number of times to encode the payload. Please enter an integer.")
+    else:
+      print("Number of times to encode the payload set.")
+
+  globals()["iterations_value"] = str(iterations_value)
+
+
+#--------------------------------------------------
+
+def encoder_space_submenu():
+  globals()["encoder_space_value"] = ""  
+
+  while encoder_space_value == "":
+
+    try:
+      globals()["encoder_space_value"] = int(input("\nPlease enter a maximum encoded payload size in bytes: "))
+    except ValueError:
+      print("\nInvalid maximum encoded payload size. Please enter an integer.")
+    else:
+      print("Maximum encoded payload size set.")
+
+  globals()["encoder_space_value"] = str(encoder_space_value)
+
+
+#--------------------------------------------------
+
+def bad_chars_submenu():
+  globals()["bad_chars_value"] = input("\nEnter characters to avoid: ")
+  print("Characters to avoid set.")
+
+
+#--------------------------------------------------
+
+def encrypt_key_submenu():
+  globals()["encrypt_key_value"] = input("\nEnter an encryption key: ")
+  print("Encryption key set.")
+
+
+#--------------------------------------------------
+
+def encrypt_iv_submenu():
+  globals()["encrypt_iv_value"] = input("\nEnter an initialization vector: ")
+  print("Initialization vector set.")
+
+
+#--------------------------------------------------
+
+def add_code_submenu():
+  globals()["add_code_value"] = input("\nEnter a win32 shellcode file name: ")
+  print("Win32 shellcode file name set.")
+
+#--------------------------------------------------
 
 def required_options_submenu():
   if payloads_value:
     try:
-      cmd = f"msfvenom --list-options -p {payloads_value}"
-      os.system(cmd)
+      options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}").split('\n\nAdvanced options')[0]
+      print(options)
     except:
       pass
   else:
@@ -111,18 +185,18 @@ def template_submenu():
 
 #--------------------------------------------------
 
-def encryptions_submenu():
+def encrypt_submenu():
 
     try:
-        globals()["encryptions_options"] = encryptions_options
+        globals()["encrypt_options"] = encrypt_options
     except NameError:
         print('\nImporting encryptions from msfvenom framework.  Please wait...')
         probe = [encr.lstrip().split(" ")[0] for encr in subprocess.getoutput("msfvenom --list encrypt").split("\n")[6:-1]]
-        globals()["encryptions_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
+        globals()["encrypt_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
         print("Complete")
         
     try:
-        globals()["encryptions_value"] = encryptions_options[submenu_input(encryptions_options)]
+        globals()["encrypt_value"] = encrypt_options[submenu_input(encrypt_options)]
     except KeyError:
         pass
 
@@ -519,17 +593,98 @@ def clear_selections():
 #--------------------------------------------------
 
 def generate_payload():
-  if payloads_value:
+
+  add_code_str = ''
+  bad_chars_str = ''  
+  encoder_space_str = ''  
+  encoding_str = ''
+  encrypt_iv_str = ''
+  encrypt_key_str = ''
+  encrypt_str = ''
+  formats_str = ''
+  iterations_str = ''
+  keep_str = ''
+  lhost_str = ''
+  lport_str = ''
+  nopsled_str = ''
+  pad_nops_str = ''
+  rhost_str = ''
+  rport_str = ''
+  sec_name_str = ''
+  service_name_str = ''
+  smallest_str = ''
+  space_str = ''
+  template_str = ''
+  var_name_str = ''
+
+  if payloads_value:    
+    payload_str = f"msfvenom -p {payloads_value} "
+    if add_code_value:
+        add_code_str = f"-c {add_code_value} "
+    elif bad_chars_value:
+        bad_chars_str = f"-b {bad_chars_value} "
+    elif encoder_space_value:
+        encoder_space_str = f"--encoder-space {encoder_space_value} "
+    elif encoding_value:
+        encoding_str = f"--encoder {encoding_value} "
+    elif encrypt_iv_value:
+        encrypt_iv_str = f"--encrypt-iv {encrypt_iv_value} "
+    elif encrypt_key_value:
+        encrypt_key_str = f"--encrypt-key {encrypt_key_value} "
+    elif encrypt_value:
+        encrypt_str = f"--encrypt {encrypt_value} "
+    elif formats_value:
+        formats_str = f"-f {formats_value} "
+    elif iterations_value:
+        iterations_str = f"-i {iterations_value} "
+    elif keep_value:
+        keep_str = f"--keep "
+    elif lhost_value:
+        lhost_str = f"LHOST={lhost_value} "
+    elif lport_value:
+        lport_str = f"LPORT={lport_value} "
+    elif nopsled_value:
+        nopsled_str = f"--nopsled {nopsled_value} "
+    elif pad_nops_value:
+        pad_nops_str = f"--pad-nops "
+    elif rhost_value:
+        rhost_str = f"RHOST={rhost_value} "
+    elif rport_value:
+        rport_str = f"RPORT={rport_value} "
+    elif sec_name_value:
+        sec_name_str = f"--sec-name {sec_name_value} "
+    elif service_name_value:
+        service_name_str = f"--service-name {service_name_value} "
+    elif smallest_value:
+        smallest_str = f"--smallest "
+    elif space_value:
+        space_str = f"--space {space_value} "
+    elif template_value:
+        template_str = f"-x {template_value} "
+    elif var_name_value:
+        var_name_str = f"-v {var_name_value} "
+
     file_name = input("Enter a file name: ")
-    print("Generating payload. Please wait...")
-    print(subprocess.getoutput("msfvenom -p " + payloads_value + " --platform " + platforms_value + " -a " + architectures_value + " -o " + file_name))
-    clear_selections()
+    file_name_str = f"-o {file_name}"
+
+    cmd = f"{payload_str}{lhost_str}{lport_str}{rhost_str}{rport_str}{add_code_str}{bad_chars_str}{encoder_space_str}{encoding_str}{encrypt_iv_str}{encrypt_key_str}{encrypt_str}{formats_str}{iterations_str}{keep_str}{nopsled_str}{pad_nops_str}{sec_name_str}{service_name_str}{smallest_str}{space_str}{template_str}{var_name_str}{file_name_str}"
+    print(f"\n{cmd}")
+    agree = input("\nWould you like to generate this payload?  (y/n): ")
+
+    if agree.lower == 'y':    
+        print("\nGenerating payload. Please wait...")
+        os.system(f'{cmd}')
+    elif agree.lower == 'n':
+        clear_selections()
+    else:
+        print("\nWrong input.  Please select 'y' or 'n'")
   else:
     print("\nNo payload specified. Please select a payload.")
   
 #--------------------------------------------------
 
 def main():
+
   globals()["border"] = "-" * 170
   globals()["header"] = "\n" + border + "\nmsfAntidote v1.0 2022 Aaron Picard and Devon Meier\n" + border
   globals()["footer"] = border + "\n[R]eturn to the main menu, [N]ext page or [P]revious page.\n" + border
@@ -542,7 +697,7 @@ def main():
                            "6": "rhost",
                            "7": "rport",
                            "8": "encoding",
-                           "9": "encryptions",
+                           "9": "encrypt",
                            "10": "formats", 
                            "11": "nopsled",
                            "12": "pad_nops",
@@ -552,7 +707,15 @@ def main():
                            "16": "service_name",
                            "17": "keep",
                            "18": "space",
-                           "0": "required_options"}
+                           "19": "add_code",
+                           "20": "bad_chars",
+                           "21": "encoder_space",
+                           "22": "iterations",
+                           "23": "var_name",
+                           "24": "encrypt_key",
+                           "25": "encrypt_iv",
+                           "0": "required_options",}
+                        
 
   print("\nStarting msf antidote.  Please wait...") 
                             
