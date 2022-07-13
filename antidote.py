@@ -1,7 +1,20 @@
 #!/usr/bin/env python
 #Revision 7/11/2022 - Devon's alternate payload method
 
-import inspect, math, re, subprocess, ipaddress
+import inspect, math, re, subprocess, ipaddress, os
+#--------------------------------------------------
+#--------------------------------------------------
+#--------------------------------------------------
+
+def required_options_submenu():
+  if payloads_value:
+    try:
+      cmd = f"msfvenom --list-options -p {payloads_value}"
+      os.system(cmd)
+    except:
+      pass
+  else:
+    print("\nPlease select a payload first.")
 
 #--------------------------------------------------
 
@@ -538,7 +551,8 @@ def main():
                            "15": "sec_name",
                            "16": "service_name",
                            "17": "keep",
-                           "18": "space"}
+                           "18": "space",
+                           "0": "required_options"}
 
   print("\nStarting msf antidote.  Please wait...") 
                             
