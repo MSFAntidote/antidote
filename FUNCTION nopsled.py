@@ -1,7 +1,7 @@
 def nopsled_submenu():
-  loop = True
+  globals()["nopsled_value"] = ""  
 
-  while loop:
+  while nopsled_value == "":
 
     try:
       globals()["nopsled_value"] = int(input("\nPlease enter a nopsled value: "))
@@ -9,6 +9,5 @@ def nopsled_submenu():
       print("\nInvalid nopsled value. Please enter an integer.")
     else:
       print("Nopsled value set.")
-      loop = False
 
   globals()["nopsled_value"] = str(nopsled_value)
