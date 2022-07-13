@@ -1,5 +1,5 @@
 def template_submenu():
-    temp = input("Please enter the name of the file you wish to use as a template: ")
+    temp = input("\nPlease enter the name of the file you wish to use as a template: ")
 
     try: 
         globals()["template_value"] = temp
