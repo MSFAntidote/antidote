@@ -1,8 +1,4 @@
 def payloads_submenu():
-
-  print('\nImporting payloads from msfvenom.  Please wait...\n\n')
-
-  payloads_list = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput('msfvenom --list payloads').split('\n')[6:-1]]
       
   payl_list = []
   three_sh = ['windows']
