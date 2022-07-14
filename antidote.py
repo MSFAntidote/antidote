@@ -677,7 +677,7 @@ def generate_payload():
         var_name_str = f"-v {var_name_value} "
 
 
-    file_name = input("Enter a file name: ")
+    file_name = input("\nEnter a file name: ")
     file_name_str = f"-o {file_name}"
 
     cmd = f"{payload_str}{platforms_str}{architectures_str}{lhost_str}{lport_str}{rhost_str}{rport_str}{add_code_str}{bad_chars_str}{encoder_space_str}{encoding_str}{encrypt_iv_str}{encrypt_key_str}{encrypt_str}{formats_str}{iterations_str}{keep_str}{nopsled_str}{pad_nops_str}{sec_name_str}{service_name_str}{smallest_str}{space_str}{template_str}{var_name_str}{file_name_str}"
@@ -702,9 +702,9 @@ def main():
   globals()["header"] = "\n" + border + "\nmsfAntidote v1.0 2022 Aaron Picard and Devon Meier\n" + border
   globals()["footer"] = border + "\n[R]eturn to the main menu, [N]ext page or [P]revious page.\n" + border
   globals()["invalid"] = "\nInvalid selection. Please try again."
-  globals()["submenus"] = {"1": "architectures",
-                           "2": "payloads",
-                           "3": "platforms",
+  globals()["submenus"] = {"1": "platforms",
+                           "2": "architectures",
+                           "3": "payloads",
                            "4": "lhost",
                            "5": "lport",
                            "6": "rhost",
@@ -738,6 +738,16 @@ def main():
   #print("Complete.\nImporting payloads from msfvenom. Please wait...")  
   probe = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput("msfvenom --list payloads").split("\n")[6:-1]]
   globals()["payloads_list"] = probe
+  print("""
+
+                  ███╗   ███╗███████╗███████╗     █████╗ ███╗   ██╗████████╗██╗██████╗  ██████╗ ████████╗███████╗
+                  ████╗ ████║██╔════╝██╔════╝    ██╔══██╗████╗  ██║╚══██╔══╝██║██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝
+                  ██╔████╔██║███████╗█████╗      ███████║██╔██╗ ██║   ██║   ██║██║  ██║██║   ██║   ██║   █████╗  
+                  ██║╚██╔╝██║╚════██║██╔══╝      ██╔══██║██║╚██╗██║   ██║   ██║██║  ██║██║   ██║   ██║   ██╔══╝  
+                  ██║ ╚═╝ ██║███████║██║         ██║  ██║██║ ╚████║   ██║   ██║██████╔╝╚██████╔╝   ██║   ███████╗
+                  ╚═╝     ╚═╝╚══════╝╚═╝         ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═════╝  ╚═════╝    ╚═╝   ╚══════╝                                                                                             
+
+""")
   #globals()["payloads_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
   #print("Complete.\nImporting platforms from msfvenom. Please wait...")  
   #probe = [plat.lstrip() for plat in subprocess.getoutput("msfvenom --list platforms").split("\n")[6:-1]]
