@@ -680,7 +680,7 @@ def generate_payload():
 
 
     file_name = input("\nEnter a file name: ")
-    file_name_str = f"-o {file_name}"
+    file_name_str = f"> {file_name}"
 
     cmd = f"{payload_str}{platforms_str}{architectures_str}{lhost_str}{lport_str}{rhost_str}{rport_str}{add_code_str}{bad_chars_str}{encoder_space_str}{encoding_str}{encrypt_iv_str}{encrypt_key_str}{encrypt_str}{formats_str}{iterations_str}{keep_str}{nopsled_str}{pad_nops_str}{sec_name_str}{service_name_str}{smallest_str}{space_str}{template_str}{var_name_str}{file_name_str}"
     print(f"\n{cmd}")
