@@ -577,7 +577,13 @@ def submenu_display(options, start, end):
   
   for option in range(start, end + 1):
 
-    options_line += "[" + str(option).rjust(3) + "] " + options[str(option)].ljust(51)
+    item = options[str(option)]
+
+    if len(item) > 50:
+      item = item[:47] + "..."
+
+    options_line += "[" + str(option).rjust(3) + "] " + item.ljust(51)
+
     if not option % 3 or option == end:
       print(options_line)
       options_line = ""
@@ -746,7 +752,12 @@ def main():
   
     for key, value in submenus.items():
       options_line += "[" + key.rjust(3) + "] " + value.capitalize().ljust(51)
-      selections_line += " " * 6 + globals()[value + "_value"].ljust(51)
+      item = globals()[value + "_value"]
+      
+      if len(item) > 50:
+        item = item[:47] + "..."
+      
+      selections_line += " " * 6 + item.ljust(51)
       key = int(key)
     
       if not key % 3 or key == len(submenus):
