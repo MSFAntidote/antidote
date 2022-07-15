@@ -692,9 +692,9 @@ def generate_payload():
     elif agree.lower() == 'n':
         clear_selections()
     else:
-        print("\n\u001b[31;1mWrong input\u001b[00m.  Please select '\u001b[36my\u001b[00m' or '\u001b[36mn\u001b[00m'")
+        print("\n\u001b[31mWrong input\u001b[00m.  Please select '\u001b[36my\u001b[00m' or '\u001b[36mn\u001b[00m'")
   else:
-    print("\nNo payload specified. Please select a payload.")
+    print("\n\u001b[31mNo payload specified. Please select a payload.\u001b[00m")
   
 #--------------------------------------------------
 
