@@ -683,8 +683,8 @@ def generate_payload():
     file_name_str = f"> {file_name}"
 
     cmd = f"{payload_str}{platforms_str}{architectures_str}{lhost_str}{lport_str}{rhost_str}{rport_str}{add_code_str}{bad_chars_str}{encoder_space_str}{encoding_str}{encrypt_iv_str}{encrypt_key_str}{encrypt_str}{formats_str}{iterations_str}{keep_str}{nopsled_str}{pad_nops_str}{sec_name_str}{service_name_str}{smallest_str}{space_str}{template_str}{var_name_str}{file_name_str}"
-    print(f"\n{cmd}")
-    agree = input("\nWould you like to generate this payload?  (y/n): ")
+    print(f"\n\u001b[33m{cmd}\u001b[00m")
+    agree = input("\nWould you like to generate this payload?  (\u001b[36my\u001b[00m/\u001b[36mn\u001b[00m): ")
 
     if agree.lower() == 'y':    
         print("\nGenerating payload. Please wait...")
@@ -692,7 +692,7 @@ def generate_payload():
     elif agree.lower() == 'n':
         clear_selections()
     else:
-        print("\nWrong input.  Please select 'y' or 'n'")
+        print("\n\u001b[31;1mWrong input\u001b[00m.  Please select '\u001b[36my\u001b[00m' or '\u001b[36mn\u001b[00m'")
   else:
     print("\nNo payload specified. Please select a payload.")
   
