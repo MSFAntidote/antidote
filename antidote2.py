@@ -809,6 +809,7 @@ def main():
       print("\nSelections cleared.")
     elif selection == "g":
       generate_payload()
+      last_payload = ""
     elif selection != "q":
       print(invalid)
 
