@@ -657,7 +657,7 @@ def generate_payload():
     if bad_chars_value:
         bad_chars_str = f"-b {bad_chars_value} "
     if cmd_value:
-        cmd_str = f"CMD={cmd_value}"
+        cmd_str = f"CMD={cmd_value} "
     if encoder_space_value:
         encoder_space_str = f"--encoder-space {encoder_space_value} "
     if encoding_value:
