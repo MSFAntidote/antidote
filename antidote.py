@@ -82,13 +82,34 @@ def add_code_submenu():
 
 def required_options_submenu():
   if payloads_value:
-    try:
-      print('\nReticulating splines...\n\n')
-      options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
-      sliced = options.split("Basic options:")[1].split('Name                        Current Setting  Required  Description')[0]
-      print(sliced)
-    except:
-      pass
+    if payloadsshell_value == 'Meterpreter':
+      try:
+        print('\nReticulating splines...\n\n')
+        options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
+        sliced = options.split("Basic options:")[1].split('Name                         Current Setting  Required  Description')[0]
+        print(sliced)
+      except:
+        pass 
+
+    elif payloadsshell_value == 'Powershell':
+      try:
+        print('\nReticulating splines...\n\n')
+        options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
+        sliced = options.split("Basic options:")[1].split('Name                                    Current Setting  Required  Description')[0]
+        print(sliced)
+      except:
+        pass  
+
+    else:
+      try:
+        print('\nReticulating splines...\n\n')
+        options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
+        sliced = options.split("Basic options:")[1].split('Name                        Current Setting  Required  Description')[0]
+        print(sliced)
+      except:
+        pass
+
+
   else:
     print("\nPlease select a payload first.")
 
@@ -695,8 +716,8 @@ def generate_payload():
         clear_selections()
         break
       print("\n\u001b[31mWrong input\u001b[00m.  Please select '\u001b[36my\u001b[00m' or '\u001b[36mn\u001b[00m'")
-  # else:
-  #   print("\n\u001b[31mNo payload specified. Please select a payload.\u001b[00m")
+  else:
+    print("\n\u001b[31mNo payload specified. Please select a payload.\u001b[00m")
   
 #--------------------------------------------------
 
