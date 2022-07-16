@@ -707,9 +707,9 @@ def generate_payload():
       if agree.lower() == 'y':    
         print("\nGenerating payload. Please wait...")
         os.system(f'{cmd}')
+        clear_selections()
         break
       elif agree.lower() == 'n':
-        clear_selections()
         break
       print("\n\u001b[31mWrong input\u001b[00m.  Please select '\u001b[36my\u001b[00m' or '\u001b[36mn\u001b[00m'")
   
