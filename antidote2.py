@@ -74,13 +74,34 @@ def add_code_submenu():
 
 def payload_information_submenu():
   if payloads_value:
-    try:
-      print('\nRetrieving information for selected payload...')
-      options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
-      sliced = options.split("Basic options:")[1].split('Name                        Current Setting  Required  Description')[0]
-      print(sliced.rstrip())
-    except:
-      pass
+    if payloadsshell_value == 'Meterpreter':
+      try:
+        print('\nRetrieving information for selected payload...\n\n')
+        options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
+        sliced = options.split("Basic options:")[1].split('Name                         Current Setting  Required  Description')[0]
+        print(sliced)
+      except:
+        pass 
+
+    elif payloadsshell_value == 'Powershell':
+      try:
+        print('\nRetrieving information for selected payload...\n\n')
+        options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
+        sliced = options.split("Basic options:")[1].split('Name                                    Current Setting  Required  Description')[0]
+        print(sliced)
+      except:
+        pass  
+
+    else:
+      try:
+        print('\nRetrieving information for selected payload...\n\n')
+        options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
+        sliced = options.split("Basic options:")[1].split('Name                        Current Setting  Required  Description')[0]
+        print(sliced)
+      except:
+        pass
+
+
   else:
     print("\nPlease select a payload first.")
 

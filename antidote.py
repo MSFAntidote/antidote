@@ -84,7 +84,7 @@ def required_options_submenu():
   if payloads_value:
     if payloadsshell_value == 'Meterpreter':
       try:
-        print('\nReticulating splines...\n\n')
+        print('\nRetrieving information for selected payload...\n\n')
         options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
         sliced = options.split("Basic options:")[1].split('Name                         Current Setting  Required  Description')[0]
         print(sliced)
@@ -93,7 +93,7 @@ def required_options_submenu():
 
     elif payloadsshell_value == 'Powershell':
       try:
-        print('\nReticulating splines...\n\n')
+        print('\nRetrieving information for selected payload...\n\n')
         options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
         sliced = options.split("Basic options:")[1].split('Name                                    Current Setting  Required  Description')[0]
         print(sliced)
@@ -102,7 +102,7 @@ def required_options_submenu():
 
     else:
       try:
-        print('\nReticulating splines...\n\n')
+        print('\nRetrieving information for selected payload...\n\n')
         options = subprocess.getoutput(f"msfvenom --list-options -p {payloads_value}")
         sliced = options.split("Basic options:")[1].split('Name                        Current Setting  Required  Description')[0]
         print(sliced)
