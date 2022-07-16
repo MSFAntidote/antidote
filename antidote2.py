@@ -621,7 +621,8 @@ def generate_payload():
     return
 
   add_code_str = ''
-  bad_chars_str = ''  
+  bad_chars_str = '' 
+  cmd_str = '' 
   encoder_space_str = ''  
   encoding_str = ''
   encrypt_iv_str = ''
@@ -655,6 +656,8 @@ def generate_payload():
       architectures_str = f"--arch {architectures_value} "
     if bad_chars_value:
         bad_chars_str = f"-b {bad_chars_value} "
+    if cmd_value:
+        cmd_str = f"CMD={cmd_value}"
     if encoder_space_value:
         encoder_space_str = f"--encoder-space {encoder_space_value} "
     if encoding_value:
@@ -699,7 +702,7 @@ def generate_payload():
     file_name = input("\nEnter a file name: ")
     file_name_str = f"> {file_name}"
 
-    cmd = f"{payload_str}{platforms_str}{architectures_str}{lhost_str}{lport_str}{rhost_str}{rport_str}{add_code_str}{bad_chars_str}{encoder_space_str}{encoding_str}{encrypt_iv_str}{encrypt_key_str}{encrypt_str}{formats_str}{iterations_str}{keep_str}{nopsled_str}{pad_nops_str}{sec_name_str}{service_name_str}{smallest_str}{space_str}{template_str}{var_name_str}{file_name_str}"
+    cmd = f"{payload_str}{platforms_str}{architectures_str}{lhost_str}{lport_str}{rhost_str}{rport_str}{add_code_str}{bad_chars_str}{cmd_str}{encoder_space_str}{encoding_str}{encrypt_iv_str}{encrypt_key_str}{encrypt_str}{formats_str}{iterations_str}{keep_str}{nopsled_str}{pad_nops_str}{sec_name_str}{service_name_str}{smallest_str}{space_str}{template_str}{var_name_str}{file_name_str}"
     print(f"\n\u001b[33m{cmd}\u001b[00m")
 
     while True:
