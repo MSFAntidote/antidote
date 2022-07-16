@@ -753,7 +753,7 @@ def main():
                            "27": "var_name"}
 
   
-  print("Starting msfAntidote. Please wait...")
+  print("\nStarting msfAntidote. Please wait...")
   probe = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput("msfvenom --list payloads").split("\n")[6:-1]]
 
   print("""\u001b[38;5;118m
@@ -763,7 +763,7 @@ def main():
                                       \u001b[38;5;118m██\u001b[37;1m║╚\u001b[38;5;118m██\u001b[37;1m╔╝\u001b[38;5;118m██\u001b[37;1m║╚════\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔══╝      \u001b[38;5;118m██\u001b[37;1m╔══\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║╚\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║  \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m╔══╝  
                                       \u001b[38;5;118m██\u001b[37;1m║ ╚═╝ \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m███████\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║         \u001b[38;5;118m██\u001b[37;1m║  \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║ ╚\u001b[38;5;118m████\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██████\u001b[37;1m╔╝╚\u001b[38;5;118m██████\u001b[37;1m╔╝   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m███████\u001b[37;1m╗
                                       \u001b[37;1m╚═╝     ╚═╝╚══════╝╚═╝         ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═════╝  ╚═════╝    ╚═╝   ╚══════╝                                                                                             
-\u001b[00m\n""")
+\u001b[00m""")
 
   globals()["payloads_list"] = probe
   clear_selections()
@@ -789,7 +789,7 @@ def main():
         print(options_line + "\n\u001b[38;5;118m" + selections_line + "\u001b[00m")
         options_line, selections_line = "", ""
   
-    print(border + "\n" + "[C]lear selections, [G]enerate payload, [N]ext page, [P]revious page or [Q]uit." + "\n" + border)
+    print(border + "\n" + "[C]lear selections, [G]enerate payload, [N]ext page, [P]revious page or [Q]uit. Required options highlighted in \u001b[31mred\u001b[00m." + "\n" + border)
     selection = input("\nmsfAntidote: Main menu (page 1 of 1)> ").lower()
     
     if selection in submenus.keys():
