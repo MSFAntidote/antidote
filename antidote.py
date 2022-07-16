@@ -1,21 +1,12 @@
 #!/usr/bin/env python
-#Revision 7/11/2022 - Devon's alternate payload method
 
 import inspect, math, re, subprocess, ipaddress, os
-#--------------------------------------------------
-#--------------------------------------------------
-#--------------------------------------------------
-#--------------------------------------------------
-#--------------------------------------------------
-
-
 
 #--------------------------------------------------
 
 def var_name_submenu():
   globals()["var_name_value"] = input("\nEnter a custom variable name: ")
   print("Custom variable name set.")
-
 
 #--------------------------------------------------
 
@@ -33,7 +24,6 @@ def iterations_submenu():
 
   globals()["iterations_value"] = str(iterations_value)
 
-
 #--------------------------------------------------
 
 def encoder_space_submenu():
@@ -50,6 +40,11 @@ def encoder_space_submenu():
 
   globals()["encoder_space_value"] = str(encoder_space_value)
 
+#--------------------------------------------------
+
+def cmd_submenu():
+  globals()["cmd_value"] = input("\nEnter an arbitrary command to execute: ")
+  print("Arbitrary command to execute set.")
 
 #--------------------------------------------------
 
@@ -57,20 +52,17 @@ def bad_chars_submenu():
   globals()["bad_chars_value"] = input("\nEnter characters to avoid: ")
   print("Characters to avoid set.")
 
-
 #--------------------------------------------------
 
 def encrypt_key_submenu():
   globals()["encrypt_key_value"] = input("\nEnter an encryption key: ")
   print("Encryption key set.")
 
-
 #--------------------------------------------------
 
 def encrypt_iv_submenu():
   globals()["encrypt_iv_value"] = input("\nEnter an initialization vector: ")
   print("Initialization vector set.")
-
 
 #--------------------------------------------------
 
@@ -80,7 +72,7 @@ def add_code_submenu():
 
 #--------------------------------------------------
 
-def required_options_submenu():
+def payload_information_submenu():
   if payloads_value:
     if payloadsshell_value == 'Meterpreter':
       try:
@@ -129,7 +121,6 @@ def space_submenu():
 
   globals()["space_value"] = str(space_value)
 
-
 #--------------------------------------------------
 
 def keep_submenu():
@@ -140,7 +131,6 @@ def keep_submenu():
   else:
     globals()["keep_value"] = "On"
     print("\nPreserve template behavior and inject the payload as a new thread turned on.")
-
 
 #--------------------------------------------------
 
@@ -153,13 +143,11 @@ def smallest_submenu():
     globals()["smallest_value"] = "On"
     print("\nSmallest possible payload feature turned on.")
 
-
 #--------------------------------------------------
 
 def service_name_submenu():
   globals()["service_name_value"] = input("\nEnter a service name: ")
   print("Service name set.")
-
 
 #--------------------------------------------------
 
@@ -178,7 +166,6 @@ def pad_nops_submenu():
     globals()["pad_nops_value"] = "On"
     print("\nPad-nops feature turned on.")
 
-
 #--------------------------------------------------
 
 def nopsled_submenu():
@@ -194,7 +181,6 @@ def nopsled_submenu():
       print("Nopsled value set.")
 
   globals()["nopsled_value"] = str(nopsled_value)
-
 
 #--------------------------------------------------
 
@@ -223,7 +209,6 @@ def encrypt_submenu():
     except KeyError:
         pass
 
-
 #--------------------------------------------------
 
 def encoding_submenu():
@@ -241,7 +226,6 @@ def encoding_submenu():
         globals()["encoding_value"] = encoding_options[submenu_input(encoding_options)]
     except KeyError:
         pass
-
 
 #--------------------------------------------------
 
@@ -306,7 +290,6 @@ def lport_submenu():
 
   globals()["lport_value"] = str(lport_value)
 
-
 #--------------------------------------------------
 
 def lhost_submenu():
@@ -348,9 +331,8 @@ def payloads_submenu():
   three_sh = ['windows']
   two_sh = ['android', 'apple_ios', 'java', 'linux', 'osx', 'php', 'python', 'unix']
   generics = ['arista', 'brocade', 'cisco', 'freebsd', 'hardware', 'hpux', 'irix', 'javascript', 'juniper', 'mikrotik', 'netbsd', 'netware', 'openbsd', 'unify', 'unknown']
-  # one_sh = ['aix', 'bsd', 'bsdi', 'firefox', 'mainframe', 'multi', 'netware', 'nodejs', 'r', 'ruby', 'solaris', 'generic']
       
-##Shell Selection##
+  ##Shell Selection##
   for string in payloads_list:
     selection = string.split('/')
 
@@ -530,7 +512,7 @@ def architectures_submenu():
   try:
     globals()["architectures_options"] = architectures_options
   except NameError:
-    print("Importing architectures from msfvenom. Please wait...")
+    print("\nImporting architectures from msfvenom. Please wait...")
     probe = [arch.lstrip() for arch in subprocess.getoutput('msfvenom --list archs').split('\n')[6:-1]]
     globals()["architectures_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
     print("Complete.")
@@ -539,7 +521,6 @@ def architectures_submenu():
     globals()["architectures_value"] = architectures_options[submenu_input(architectures_options)]
   except KeyError:
     pass
-
 
 #--------------------------------------------------
 
@@ -618,13 +599,30 @@ def submenu_display(options, start, end):
 def clear_selections():
   for submenu in submenus.values():
     globals()[submenu + "_value"] = ""
+    
+    if submenu == "payloads":
+      globals()[submenu + "_required"] = "\u001b[31m"
+    else:
+      globals()[submenu + "_required"] = ""
 
 #--------------------------------------------------
 
 def generate_payload():
+  cont = True
+
+  for item in submenus.values():
+    if eval(item + "_required") and not eval(item + "_value"):
+      if cont:
+        print()
+      cont = False
+      print(item.capitalize() + " is required. Please make a selection for " + item + " and try again.")
+
+  if not cont:
+    return
 
   add_code_str = ''
-  bad_chars_str = ''  
+  bad_chars_str = '' 
+  cmd_str = '' 
   encoder_space_str = ''  
   encoding_str = ''
   encrypt_iv_str = ''
@@ -658,6 +656,8 @@ def generate_payload():
       architectures_str = f"--arch {architectures_value} "
     if bad_chars_value:
         bad_chars_str = f"-b {bad_chars_value} "
+    if cmd_value:
+        cmd_str = f"CMD={cmd_value} "
     if encoder_space_value:
         encoder_space_str = f"--encoder-space {encoder_space_value} "
     if encoding_value:
@@ -699,25 +699,22 @@ def generate_payload():
     if var_name_value:
         var_name_str = f"-v {var_name_value} "
 
-
     file_name = input("\nEnter a file name: ")
     file_name_str = f"> {file_name}"
 
-    cmd = f"{payload_str}{platforms_str}{architectures_str}{lhost_str}{lport_str}{rhost_str}{rport_str}{add_code_str}{bad_chars_str}{encoder_space_str}{encoding_str}{encrypt_iv_str}{encrypt_key_str}{encrypt_str}{formats_str}{iterations_str}{keep_str}{nopsled_str}{pad_nops_str}{sec_name_str}{service_name_str}{smallest_str}{space_str}{template_str}{var_name_str}{file_name_str}"
+    cmd = f"{payload_str}{platforms_str}{architectures_str}{lhost_str}{lport_str}{rhost_str}{rport_str}{add_code_str}{bad_chars_str}{cmd_str}{encoder_space_str}{encoding_str}{encrypt_iv_str}{encrypt_key_str}{encrypt_str}{formats_str}{iterations_str}{keep_str}{nopsled_str}{pad_nops_str}{sec_name_str}{service_name_str}{smallest_str}{space_str}{template_str}{var_name_str}{file_name_str}"
     print(f"\n\u001b[33m{cmd}\u001b[00m")
 
     while True:
-      agree = input("\nWould you like to generate this payload?  (\u001b[36my\u001b[00m/\u001b[36mn\u001b[00m): ")
+      agree = input("\nWould you like to generate this payload? (\u001b[36my\u001b[00m/\u001b[36mn\u001b[00m): ")
       if agree.lower() == 'y':    
         print("\nGenerating payload. Please wait...")
         os.system(f'{cmd}')
-        break
-      elif agree.lower() == 'n':
         clear_selections()
         break
+      elif agree.lower() == 'n':
+        break
       print("\n\u001b[31mWrong input\u001b[00m.  Please select '\u001b[36my\u001b[00m' or '\u001b[36mn\u001b[00m'")
-  else:
-    print("\n\u001b[31mNo payload specified. Please select a payload.\u001b[00m")
   
 #--------------------------------------------------
 
@@ -727,67 +724,59 @@ def main():
   globals()["header"] = "\n" + border + "\nmsfAntidote v1.0 2022 Aaron Picard and Devon Meier\n" + border
   globals()["footer"] = border + "\n[R]eturn to the main menu, [N]ext page or [P]revious page.\n" + border
   globals()["invalid"] = "\nInvalid selection. Please try again."
-  globals()["submenus"] = {"1": "platforms",
-                           "2": "architectures",
-                           "3": "payloads",
-                           "4": "lhost",
-                           "5": "lport",
-                           "6": "rhost",
-                           "7": "rport",
-                           "8": "encoding",
-                           "9": "encrypt",
-                           "10": "formats", 
-                           "11": "nopsled",
-                           "12": "pad_nops",
-                           "13": "template",
-                           "14": "smallest",
-                           "15": "sec_name",
-                           "16": "service_name",
-                           "17": "keep",
-                           "18": "space",
-                           "19": "add_code",
-                           "20": "bad_chars",
-                           "21": "encoder_space",
-                           "22": "iterations",
-                           "23": "var_name",
-                           "24": "encrypt_key",
-                           "25": "encrypt_iv",
-                           "0": "required_options",}
-                        
+  globals()["submenus"] = {"1": "architectures",
+                           "2": "payloads",
+                           "3": "payload_information",
+                           "4": "platforms",
+                           "5": "cmd",
+                           "6": "lhost",
+                           "7": "lport",
+                           "8": "rhost",
+                           "9": "rport",
+                           "10": "add_code",
+                           "11": "bad_chars",
+                           "12": "encoder_space",
+                           "13": "encoding",
+                           "14": "encrypt",
+                           "15": "encrypt_iv",
+                           "16": "encrypt_key",
+                           "17": "formats", 
+                           "18": "iterations",
+                           "19": "keep",
+                           "20": "nopsled",
+                           "21": "pad_nops",
+                           "22": "sec_name",
+                           "23": "service_name",
+                           "24": "smallest",
+                           "25": "space",
+                           "26": "template",
+                           "27": "var_name"}
 
-  print("\nStarting msf antidote.  Please wait...") 
-                            
-  #print("Importing architectures from msfvenom. Please wait...")
-  #probe = [arch.lstrip() for arch in subprocess.getoutput('msfvenom --list archs').split('\n')[6:-1]]
-  #globals()["architectures_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
-  #print("Complete.\nImporting payloads from msfvenom. Please wait...")  
+  
+  print("Starting msfAntidote. Please wait...")
   probe = [payl.lstrip().split(" ")[0] for payl in subprocess.getoutput("msfvenom --list payloads").split("\n")[6:-1]]
-  globals()["payloads_list"] = probe
+
   print("""\u001b[38;5;118m
+                                      ███\u001b[37;1m╗   \u001b[38;5;118m███\u001b[37;1m╗\u001b[38;5;118m███████\u001b[37;1m╗\u001b[38;5;118m███████\u001b[37;1m╗     \u001b[38;5;118m█████\u001b[37;1m╗ \u001b[38;5;118m███\u001b[37;1m╗   \u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m████████\u001b[37;1m╗\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m██████\u001b[37;1m╗  \u001b[38;5;118m██████\u001b[37;1m╗ \u001b[38;5;118m████████\u001b[37;1m╗\u001b[38;5;118m███████\u001b[37;1m╗
+                                      \u001b[38;5;118m████\u001b[37;1m╗ \u001b[38;5;118m████\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔════╝\u001b[38;5;118m██\u001b[37;1m╔════╝    \u001b[38;5;118m██\u001b[37;1m╔══\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m████\u001b[37;1m╗  \u001b[38;5;118m██\u001b[37;1m║╚══\u001b[38;5;118m██\u001b[37;1m╔══╝\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔══\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m██\u001b[37;1m╔═══\u001b[38;5;118m██\u001b[37;1m╗╚══\u001b[38;5;118m██\u001b[37;1m╔══╝\u001b[38;5;118m██\u001b[37;1m╔════╝
+                                      \u001b[38;5;118m██\u001b[37;1m╔\u001b[38;5;118m████\u001b[37;1m╔\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m███████\u001b[37;1m╗\u001b[38;5;118m█████\u001b[37;1m╗      \u001b[38;5;118m███████\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔\u001b[38;5;118m██\u001b[37;1m╗ \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║  \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m█████\u001b[37;1m╗  
+                                      \u001b[38;5;118m██\u001b[37;1m║╚\u001b[38;5;118m██\u001b[37;1m╔╝\u001b[38;5;118m██\u001b[37;1m║╚════\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔══╝      \u001b[38;5;118m██\u001b[37;1m╔══\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║╚\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║  \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m╔══╝  
+                                      \u001b[38;5;118m██\u001b[37;1m║ ╚═╝ \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m███████\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║         \u001b[38;5;118m██\u001b[37;1m║  \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║ ╚\u001b[38;5;118m████\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██████\u001b[37;1m╔╝╚\u001b[38;5;118m██████\u001b[37;1m╔╝   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m███████\u001b[37;1m╗
+                                      \u001b[37;1m╚═╝     ╚═╝╚══════╝╚═╝         ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═════╝  ╚═════╝    ╚═╝   ╚══════╝                                                                                             
+\u001b[00m\n""")
 
-
-                      ███\u001b[37;1m╗   \u001b[38;5;118m███\u001b[37;1m╗\u001b[38;5;118m███████\u001b[37;1m╗\u001b[38;5;118m███████\u001b[37;1m╗     \u001b[38;5;118m█████\u001b[37;1m╗ \u001b[38;5;118m███\u001b[37;1m╗   \u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m████████\u001b[37;1m╗\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m██████\u001b[37;1m╗  \u001b[38;5;118m██████\u001b[37;1m╗ \u001b[38;5;118m████████\u001b[37;1m╗\u001b[38;5;118m███████\u001b[37;1m╗
-                      \u001b[38;5;118m████\u001b[37;1m╗ \u001b[38;5;118m████\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔════╝\u001b[38;5;118m██\u001b[37;1m╔════╝    \u001b[38;5;118m██\u001b[37;1m╔══\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m████\u001b[37;1m╗  \u001b[38;5;118m██\u001b[37;1m║╚══\u001b[38;5;118m██\u001b[37;1m╔══╝\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔══\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m██\u001b[37;1m╔═══\u001b[38;5;118m██\u001b[37;1m╗╚══\u001b[38;5;118m██\u001b[37;1m╔══╝\u001b[38;5;118m██\u001b[37;1m╔════╝
-                      \u001b[38;5;118m██\u001b[37;1m╔\u001b[38;5;118m████\u001b[37;1m╔\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m███████\u001b[37;1m╗\u001b[38;5;118m█████\u001b[37;1m╗      \u001b[38;5;118m███████\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔\u001b[38;5;118m██\u001b[37;1m╗ \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║  \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m█████\u001b[37;1m╗  
-                      \u001b[38;5;118m██\u001b[37;1m║╚\u001b[38;5;118m██\u001b[37;1m╔╝\u001b[38;5;118m██\u001b[37;1m║╚════\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m╔══╝      \u001b[38;5;118m██\u001b[37;1m╔══\u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║╚\u001b[38;5;118m██\u001b[37;1m╗\u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║  \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m╔══╝  
-                      \u001b[38;5;118m██\u001b[37;1m║ ╚═╝ \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m███████\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║         \u001b[38;5;118m██\u001b[37;1m║  \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██\u001b[37;1m║ ╚\u001b[38;5;118m████\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m██\u001b[37;1m║\u001b[38;5;118m██████\u001b[37;1m╔╝╚\u001b[38;5;118m██████\u001b[37;1m╔╝   \u001b[38;5;118m██\u001b[37;1m║   \u001b[38;5;118m███████\u001b[37;1m╗
-                      \u001b[37;1m╚═╝     ╚═╝╚══════╝╚═╝         ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═════╝  ╚═════╝    ╚═╝   ╚══════╝                                                                                             
-
-\u001b[00m""")
-  #globals()["payloads_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
-  #print("Complete.\nImporting platforms from msfvenom. Please wait...")  
-  #probe = [plat.lstrip() for plat in subprocess.getoutput("msfvenom --list platforms").split("\n")[6:-1]]
-  #globals()["platforms_options"] = {str(item + 1): probe[item] for item in range(0, len(probe))}
-  #print("Complete.")
+  globals()["payloads_list"] = probe
   clear_selections()
   selection = ""
-  
+  last_payload = ""
+
   while selection != "q":
+
     options_line, selections_line = "", ""
     print(header)
   
     for key, value in submenus.items():
-      options_line += "[" + key.rjust(3) + "] " + value.capitalize().ljust(51)
+      options_line += "[" + key.rjust(3) + "] " + eval(value + "_required") + value.replace("_", "-").capitalize().replace("Payload-information", "Payload Information").ljust(51) + "\u001b[00m"
       item = globals()[value + "_value"]
       
       if len(item) > 50:
@@ -797,7 +786,7 @@ def main():
       key = int(key)
     
       if not key % 3 or key == len(submenus):
-        print(options_line + "\n\u001b[31m" + selections_line + "\u001b[00m")
+        print(options_line + "\n\u001b[38;5;118m" + selections_line + "\u001b[00m")
         options_line, selections_line = "", ""
   
     print(border + "\n" + "[C]lear selections, [G]enerate payload, [N]ext page, [P]revious page or [Q]uit." + "\n" + border)
@@ -805,11 +794,28 @@ def main():
     
     if selection in submenus.keys():
       eval(submenus[selection] + "_submenu()")
+
+      if submenus[selection] == "payloads" and last_payload != payloads_value:
+
+        for submenu in submenus.values():
+          if submenu == "payloads":
+            globals()[submenu + "_required"] = "\u001b[31m"
+          else:
+            globals()[submenu + "_required"] = ""
+
+        print("\nRetrieving required options for selected payload. Please wait...")
+        last_payload = payloads_value
+        for line in subprocess.getoutput("msfvenom --list-options -p" + payloads_value).split("Description:")[0].split("-" * 11 + "\n")[1].rstrip().split("\n"):
+          line = re.sub(" +", " ", line.replace("  ", "<>").replace(" ", "").replace("<>", "  ")).split()
+          if "yes" in line:
+            globals()[line[0].rstrip().lower() + "_required"] = "\u001b[31m"
+
     elif selection == "c":
       clear_selections()
       print("\nSelections cleared.")
     elif selection == "g":
       generate_payload()
+      last_payload = ""
     elif selection != "q":
       print(invalid)
 
